@@ -1,0 +1,103 @@
+	#
+	#Keep this comment just like this. To keep help script format, follow this rules
+	#Lines that begins with spaces will not display in help
+	#Add command description just at the end with a comment (#)
+	#To hide a shortcut in help script, just add white spaces (tabs) at the line begining
+	#Try to make brief descriptions. For more info see help script in the same sxhdk forlder
+	#
+#Terminal emulator (urxvt)
+super + Return 	
+	urxvtc 
+
+#NeoVim
+super + v
+	urxvtc --title NeoVim  --working-directory ~/Documentos/Repositories/ -e $SHELL -lc "nvim"
+
+#Web-Browser (incognito)
+super + {_,shift + }b
+	{brave,brave --incognito}
+
+#Search rofi
+super + @space 
+	sh ~/.config/rofi/applets/launcher.sh &
+
+#Reload sxhkd config
+super + Escape 
+	pkill -USR1 -x sxhkd && notify-send "sxhkd" "Reloaded"
+
+#Quit/restart bspwm
+super + alt + r 
+	bspc wm -r && notify-send "bspwm" "Reloaded"
+
+#Change wallpaper
+super + d
+	feh --no-fehbg --bg-fill --randomize /usr/share/backgrounds/*
+
+#Close/kill active window
+super + {_,shift + }w 
+	bspc node -{c,k}
+
+super + Tab
+	bspc node @parent -R 90
+
+#Toggle monocle mode
+super + m  
+	bspc desktop -l next && notify-send "Monocle" "Toggled" -t 1000 -u LOW
+
+#Active window to biggest node in the current desktop
+super + g 
+	bspc node -s biggest.window.local
+
+#Tiled mode
+super + t 
+	bspc node -t tiled && notify-send "Fullscreen" "Off" -t 1000 -u LOW
+
+#Fullscreen mode
+super + f 
+	bspc node -t fullscreen && notify-send "Fullscreen" "On" -t 1000 -u LOW
+
+#Next/prev window
+alt + {_,shift +}Tab
+ 	bspc node -f {next,prev}.local.window
+
+#Focus/Move the node in the given direction
+super + {_,shift + }{h,j,k,l} 
+	bspc node -{f,s} {west,south,north,east}
+
+#Focus/Send to the given desktop
+super + {_,shift + }{1-9,0} 
+	bspc {desktop -f,node -d} '^{1-9,10}'
+
+#Expand/Contract a window by moving one of its side outward
+super + alt + {h,j,k,l} 
+	bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+super + alt + shift + {h,j,k,l} 
+	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+
+#Move a floating window
+super + {Left,Down,Up,Right} 
+	bspc node -v {-20 0,0 20,0 -20,20 0}
+
+#Screenshot to file/clipboard (in ~/Pictures/) selected area
+Print
+	sh ~/.config/rofi/applets/screenshot.sh
+
+#Media volume control
+XF86Audio{Raise,Lower}Volume 
+	sh ~/.config/dunst/changeVolme 5%{+,-}
+
+#Media mute/unmute
+XF86AudioMute 
+	sh ~/.config/dunst/changeVolume 0%
+
+#Media brightness control
+XF86MonBrightness{Up,Down} 
+	sh ~/.config/dunst/changeBright 10%{+,-}
+
+#Screen mode change
+super + f3
+	xrandr --output HDMI-A-0 --auto
+
+#Change external display
+#XF86Video + {h,l}
+#	xrandr --output HDMI-A-0 --{left,right}-of eDP

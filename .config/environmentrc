@@ -1,0 +1,46 @@
+#This script manages environment complementary tools
+pkill feh;
+feh --no-fehbg --bg-fill --randomize /usr/share/backgrounds/*
+
+#picom for bspwm compositor (enables some visual effects)
+pkill picom;
+picom -b --experimental-backend  &
+
+#Able touchpad gestures and more
+#Find touchpad device id
+touchpad=$(xinput --list --short | grep -i touchpad | awk '{print $6}' | sed 's/id=//')
+#Tap to click
+xinput set-prop $touchpad 'libinput Tapping Enabled' 1
+xinput set-prop $touchpad 'libinput Natural Scrolling Enabled' 1
+xinput set-prop $touchpad 'libinput Accel Speed' 0.25
+pkill libinput-gestures;
+libinput-gestures &
+
+#Polkit agent (GUI for ask password)
+lxpolkit &
+
+#Common daemon applications
+pkill pcmanfm;
+pcmanfm -d &
+pkill xurvtd;
+urxvtd &
+
+#Custom applications (systray applications)
+pkill -f slimbookbattery;
+slimbookbattery --minimize &
+pkill kdeconnect-indicator;
+kdeconnect-indicator &
+
+#Polybar (TBC: maybe use another panel)
+pkill polybar;
+polybar -rq launcher &
+polybar -rq desktops &
+polybar -rq window &
+polybar -rq close &
+polybar -rq date &
+polybar -rq clock &
+polybar -rq config &
+polybar -rq power &
+
+#Raise help notification
+#sh ~/.config/dunst/shortcutsHelp &

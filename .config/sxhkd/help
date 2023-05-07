@@ -1,0 +1,3 @@
+#!/bin/bash
+grep "^[^[:blank:]]" ~/.config/sxhkd/sxhkdrc | sed 's/^[^#].*/\t<i><b>&<\/b><\/i>\n/' | sed 's/#//' | sed 's/@//'
+
